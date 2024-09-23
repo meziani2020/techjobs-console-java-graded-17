@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +53,8 @@ public class TechJobs {
                     }
                 }
 
-            } else { // choice is "search"
+            }
+            else { // choice is "search"
 
                 // How does the user want to search (e.g. by skill or employer)
                 String searchField = getUserSelection("Search by:", columnChoices);
@@ -62,7 +64,10 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not implemented yet.");
+
+                    printJobs(JobData.findByValue(searchTerm));
+                    //System.out.println("Search all fields not implemented yet.");
+                   // System.out.println("Search results is: "+JobData.findByValue(searchTerm).size());
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -119,7 +124,32 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        String textToPrint="";
+       if(textToPrint ==null || someJobs.size()==0){
+           textToPrint="No Results";
+        }else{
+            for( HashMap<String, String> job :someJobs){
+                //System.out.print(job.keySet());
+                textToPrint+=pritableListTxtformat(job)+"\n";
+             }
+       }
+        System.out.print(textToPrint);
+        //System.out.println("printJobs is not implemented yet");
 
-        System.out.println("printJobs is not implemented yet");
+
+    }
+
+    private  static String pritableListTxtformat( HashMap<String, String> jobMap){
+
+
+        String txt="\n";
+        String[] keys =  jobMap.keySet().toArray(new String[jobMap.keySet().size()]);
+        txt+="*****\n";
+        for(String key:keys){
+            txt +=key+": "+jobMap.get(key)+"\n";
+        }
+        txt +="*****";
+      return txt;
+
     }
 }

@@ -13,7 +13,8 @@ import java.util.List;
 /**
  * Created by LaunchCode
  */
-public class JobData {
+public class  JobData {
+
 
     private static final String DATA_FILE = "src/main/resources/job_data.csv";
     private static boolean isDataLoaded = false;
@@ -27,6 +28,7 @@ public class JobData {
      * @param field The column to retrieve values from
      * @return List of all of the values of the given field
      */
+
     public static ArrayList<String> findAll(String field) {
 
         // load data, if not already loaded
@@ -75,7 +77,8 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.trim().toUpperCase().contains(value.trim().toUpperCase())) {
+            //if (aValue.contains(value)) {
                 jobs.add(row);
             }
         }
@@ -93,9 +96,27 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        if(allJobs.size()>=0) {// IF THER ID DATA
+            // put dynamicly the different colums in an array, so all columns will be included in search
+             String[] columns = allJobs.get(0).keySet().toArray(new String[allJobs.get(0).keySet().size()]);
 
-        // TODO - implement this method
-        return null;
+            String colValue = null;
+            for (HashMap<String, String> row : allJobs) {
+                 //colValue = null;
+                 for(String column: columns){
+                      colValue = row.get(column);
+                     if (colValue.trim().toUpperCase().contains(value.trim().toUpperCase())){
+                     //if (colValue.contains(value)){
+                         jobs.add(row);
+                         break;// break the loop so no repetition if more columns of this row has the value
+                     }
+
+                 }
+
+            }
+        }
+        return jobs;
     }
 
     /**
